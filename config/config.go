@@ -1,10 +1,10 @@
 package config
 
 import (
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/om13rajpal/gobackend/utils"
 )
 
 var (
@@ -15,7 +15,9 @@ var (
 
 func LoadConfig() {
 	envError := godotenv.Load(".env")
-	utils.HandleError(envError, ".env not loaded")
+	if envError != nil {
+		log.Fatal("Could not read .env")
+	}
 
 	PORT = getEnv("PORT", "3000")
 	MONGO_URI = getEnv("MONGO_URI", "mongodb://localhost:27017/")
