@@ -12,6 +12,7 @@ func InitRouter() *gin.Engine {
 
 	r.GET("/", handlers.HandleHome)
 	r.POST("/signup", handlers.Signup)
+	r.POST("/login", handlers.Login)
 
 	return r
 }

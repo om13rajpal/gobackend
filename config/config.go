@@ -11,6 +11,8 @@ var (
 	PORT       string
 	MONGO_URI  string
 	JWT_SECRET string
+	EMAIL      string
+	PASSWORD   string
 )
 
 func LoadConfig() {
@@ -22,6 +24,8 @@ func LoadConfig() {
 	PORT = getEnv("PORT", "3000")
 	MONGO_URI = getEnv("MONGO_URI", "mongodb://localhost:27017/")
 	JWT_SECRET = getEnv("JWT_SECRET", "golang")
+	EMAIL = getEnv("EMAIL", "")
+	PASSWORD = getEnv("PASSWORD", "")
 }
 
 func getEnv(key string, fallback string) string {
