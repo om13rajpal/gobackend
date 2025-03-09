@@ -44,10 +44,10 @@ func GetUsers(c *gin.Context) {
 	})
 }
 
-func GetUser(c *gin.Context){
+func GetUser(c *gin.Context) {
 	id := c.Param("id")
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second * 10)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
 
 	objId, err := bson.ObjectIDFromHex(id)
@@ -69,8 +69,61 @@ func GetUser(c *gin.Context){
 	}
 
 	c.IndentedJSON(http.StatusOK, gin.H{
-		"status": true,
+		"status":  true,
 		"message": "user found",
-		"user": fetchedUser,
+		"user":    fetchedUser,
+	})
+}
+
+func DeleteUser(c *gin.Context) {
+	id := c.Param("id")
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	objId, err := bson.ObjectIDFromHex(id)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	deleteUser := database.UserCollection.FindOneAndDelete(ctx, bson.M{
+		"_id": objId,
+	})
+
+	c.IndentedJSON(http.StatusOK, gin.H{
+		"status":      true,
+		"message":     "User deleted successfully",
+		"deletedUser": deleteUser,
+	})
+}
+
+func UpdateUser(c *gin.Context) {
+	id := c.Param("id")
+
+	var updatedValues models.User
+
+	c.BindJSON(&updatedValues)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+	defer cancel()
+
+	objId, err := bson.ObjectIDFromHex(id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var updatedUser models.User
+	err = database.UserCollection.FindOneAndUpdate(ctx, bson.M{
+		"_id": objId,
+	}, bson.M{"$set": updatedValues}).Decode(&updatedUser)
+	
+	if err != nil {
+		log.Fatal(err)
+	}	
+
+	c.IndentedJSON(http.StatusOK, gin.H{
+		"status":      true,
+		"message":     "user updated successfully",
+		"updatedUser": updatedUser,
 	})
 }

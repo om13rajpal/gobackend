@@ -13,8 +13,13 @@ func InitRouter() *gin.Engine {
 	r.GET("/", handlers.HandleHome)
 	r.GET("/users", handlers.GetUsers)
 	r.GET("/users/:id", handlers.GetUser)
+
 	r.POST("/signup", handlers.Signup)
 	r.POST("/login", handlers.Login)
+
+	r.DELETE("/users/:id", handlers.DeleteUser)
+
+	r.PATCH("/users/:id", handlers.UpdateUser)
 
 	return r
 }
