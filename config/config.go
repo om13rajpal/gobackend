@@ -13,6 +13,7 @@ var (
 	JWT_SECRET string
 	EMAIL      string
 	PASSWORD   string
+	POSTGRES_URI string
 )
 
 func LoadConfig() {
@@ -26,6 +27,7 @@ func LoadConfig() {
 	JWT_SECRET = getEnv("JWT_SECRET", "golang")
 	EMAIL = getEnv("EMAIL", "")
 	PASSWORD = getEnv("PASSWORD", "")
+	POSTGRES_URI = getEnv("POSTGRES_URI", "")
 }
 
 func getEnv(key string, fallback string) string {
